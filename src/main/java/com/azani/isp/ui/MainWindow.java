@@ -129,6 +129,13 @@ public class MainWindow extends JFrame {
         JTextField txtEmail = new JTextField(16);
         JTextField txtNationalId = new JTextField(16);
 
+        // Ensure all text fields have visible black text on white background
+        for (JTextField f : new JTextField[]{txtName, txtAddress, txtContactName, txtDesignation, txtPhone, txtEmail, txtNationalId}) {
+            f.setForeground(Color.BLACK);
+            f.setBackground(Color.WHITE);
+            f.setCaretColor(Color.BLACK);
+        }
+
         form.add(new JLabel("Institution Name:"), gbc); gbc.gridx = 1; form.add(txtName, gbc);
         gbc.gridx = 0; gbc.gridy++; form.add(new JLabel("Category:"), gbc); gbc.gridx = 1; form.add(cmbCategory, gbc);
         gbc.gridx = 0; gbc.gridy++; form.add(new JLabel("Physical Address:"), gbc); gbc.gridx = 1; form.add(txtAddress, gbc);
@@ -138,6 +145,7 @@ public class MainWindow extends JFrame {
         gbc.gridx = 0; gbc.gridy++; form.add(new JLabel("Phone Number:"), gbc); gbc.gridx = 1; form.add(txtPhone, gbc);
         gbc.gridx = 0; gbc.gridy++; form.add(new JLabel("Email Address:"), gbc); gbc.gridx = 1; form.add(txtEmail, gbc);
         gbc.gridx = 0; gbc.gridy++; form.add(new JLabel("National/Staff ID:"), gbc); gbc.gridx = 1; form.add(txtNationalId, gbc);
+
 
         JButton btnRegister = new JButton("Register Institution");
         btnRegister.setBackground(new Color(33, 115, 70));
@@ -192,6 +200,13 @@ public class MainWindow extends JFrame {
         JTextField txtLanNodes = new JTextField("0", 12);
         JLabel lblCostPreview = new JLabel("Est. Total Installation: KSh 10,000.00");
         lblCostPreview.setFont(new Font("Segoe UI", Font.BOLD, 12));
+
+        // Ensure visible black text on white background
+        for (JTextField f : new JTextField[]{txtInstId, txtUsers, txtPcs, txtLanNodes}) {
+            f.setForeground(Color.BLACK);
+            f.setBackground(Color.WHITE);
+            f.setCaretColor(Color.BLACK);
+        }
 
         form.add(new JLabel("Institution ID:"), gbc); gbc.gridx = 1; form.add(txtInstId, gbc);
         gbc.gridx = 0; gbc.gridy++; form.add(new JLabel("Number of Users:"), gbc); gbc.gridx = 1; form.add(txtUsers, gbc);
@@ -248,6 +263,10 @@ public class MainWindow extends JFrame {
         JCheckBox chkUpgrade = new JCheckBox("Upgrade to Higher Bandwidth (10% Discount Offered)");
         chkUpgrade.setForeground(new Color(0, 100, 0));
 
+        txtSubInstId.setForeground(Color.BLACK);
+        txtSubInstId.setBackground(Color.WHITE);
+        txtSubInstId.setCaretColor(Color.BLACK);
+
         form.add(new JLabel("Institution ID:"), gbc); gbc.gridx = 1; form.add(txtSubInstId, gbc);
         gbc.gridx = 0; gbc.gridy++; form.add(new JLabel("Bandwidth Package:"), gbc); gbc.gridx = 1; form.add(cmbPackage, gbc);
         gbc.gridx = 0; gbc.gridy++; gbc.gridwidth = 2; form.add(chkUpgrade, gbc);
@@ -303,6 +322,13 @@ public class MainWindow extends JFrame {
         JTextField txtAmount = new JTextField(14);
         JTextField txtRefNo = new JTextField(14);
         JTextField txtNotes = new JTextField(14);
+
+        // Ensure visible black text on white background
+        for (JTextField f : new JTextField[]{txtPayInstId, txtAmount, txtRefNo, txtNotes}) {
+            f.setForeground(Color.BLACK);
+            f.setBackground(Color.WHITE);
+            f.setCaretColor(Color.BLACK);
+        }
 
         cmbPayType.addActionListener(e -> {
             PaymentType pt = (PaymentType) cmbPayType.getSelectedItem();
