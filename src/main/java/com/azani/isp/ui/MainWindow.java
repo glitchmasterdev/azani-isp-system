@@ -148,8 +148,8 @@ public class MainWindow extends JFrame {
 
 
         JButton btnRegister = new JButton("Register Institution");
-        btnRegister.setBackground(new Color(33, 115, 70));
-        btnRegister.setForeground(Color.WHITE);
+        btnRegister.setForeground(Color.BLACK);
+        btnRegister.setFont(new Font("Segoe UI", Font.BOLD, 12));
         gbc.gridx = 0; gbc.gridy++; gbc.gridwidth = 2;
         form.add(btnRegister, gbc);
 
@@ -351,8 +351,8 @@ public class MainWindow extends JFrame {
         gbc.gridx = 0; gbc.gridy++; form.add(new JLabel("Notes:"), gbc); gbc.gridx = 1; form.add(txtNotes, gbc);
 
         JButton btnCapturePay = new JButton("Capture Payment");
-        btnCapturePay.setBackground(new Color(25, 118, 210));
-        btnCapturePay.setForeground(Color.WHITE);
+        btnCapturePay.setForeground(Color.BLACK);
+        btnCapturePay.setFont(new Font("Segoe UI", Font.BOLD, 12));
         gbc.gridx = 0; gbc.gridy++; gbc.gridwidth = 2; form.add(btnCapturePay, gbc);
 
         btnCapturePay.addActionListener(e -> {
@@ -690,8 +690,8 @@ public class MainWindow extends JFrame {
 
         JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 10));
         JButton btnConnect = new JButton("Save & Connect");
-        btnConnect.setBackground(new Color(24, 118, 209));
-        btnConnect.setForeground(Color.WHITE);
+        btnConnect.setForeground(Color.BLACK);
+        btnConnect.setFont(new Font("Segoe UI", Font.BOLD, 12));
         JButton btnCancel = new JButton("Cancel");
 
         btnConnect.addActionListener(e -> {
