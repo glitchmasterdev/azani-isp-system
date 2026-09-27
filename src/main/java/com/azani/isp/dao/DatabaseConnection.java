@@ -46,14 +46,34 @@ public class DatabaseConnection {
         }
     }
 
+    private static File getGlobalConfigFile() {
+        File dir = new File(System.getProperty("user.home", "."), ".azani_isp");
+        if (!dir.exists()) dir.mkdirs();
+        return new File(dir, "db.properties");
+    }
+
+    private static String getH2JdbcUrl() {
+        File dir = new File(System.getProperty("user.home", "."), ".azani_isp");
+        if (!dir.exists()) dir.mkdirs();
+        String dbPath = new File(dir, "azani_isp_db").getAbsolutePath().replace('\\', '/');
+        return "jdbc:h2:" + dbPath + ";AUTO_SERVER=TRUE;DB_CLOSE_DELAY=-1;MODE=MySQL;DATABASE_TO_LOWER=TRUE;CASE_INSENSITIVE_IDENTIFIERS=TRUE";
+    }
+
     public static void loadConfiguration() {
-        // First check external db.properties in working directory if available
         File extFile = new File("db.properties");
+        File globalFile = getGlobalConfigFile();
+
         if (extFile.exists()) {
             try (InputStream in = new FileInputStream(extFile)) {
                 config.load(in);
             } catch (Exception e) {
                 System.err.println("Notice: Could not read local db.properties: " + e.getMessage());
+            }
+        } else if (globalFile.exists()) {
+            try (InputStream in = new FileInputStream(globalFile)) {
+                config.load(in);
+            } catch (Exception e) {
+                System.err.println("Notice: Could not read global db.properties: " + e.getMessage());
             }
         } else {
             try (InputStream in = DatabaseConnection.class.getResourceAsStream("/db.properties")) {
@@ -70,7 +90,7 @@ public class DatabaseConnection {
 
     private static void applyConfigProperties() {
         String explicitUrl = config.getProperty("db.url", "").trim();
-        dbType = config.getProperty("db.type", "mysql").trim().toLowerCase();
+        dbType = config.getProperty("db.type", "supabase").trim().toLowerCase();
 
         if (!explicitUrl.isEmpty()) {
             jdbcUrl = explicitUrl;
@@ -105,7 +125,7 @@ public class DatabaseConnection {
             jdbcUrl = "jdbc:mysql://" + host + ":" + port + "/" + dbName + "?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC";
         } else {
             dbType = "h2";
-            jdbcUrl = "jdbc:h2:mem:azani_isp_db;DB_CLOSE_DELAY=-1;MODE=MySQL;DATABASE_TO_LOWER=TRUE;CASE_INSENSITIVE_IDENTIFIERS=TRUE";
+            jdbcUrl = getH2JdbcUrl();
         }
     }
 
@@ -129,7 +149,7 @@ public class DatabaseConnection {
             boolean autoFallback = Boolean.parseBoolean(config.getProperty("db.auto_fallback", "true"));
             if (!"h2".equalsIgnoreCase(dbType) && autoFallback) {
                 System.out.println("Notice: " + dbType.toUpperCase() + " connection failed (" + e.getMessage() + ").");
-                System.out.println("Switching to embedded database mode for uninterrupted operation...");
+                System.out.println("Switching to persistent embedded database mode for uninterrupted operation...");
                 switchToH2();
                 isInitialized = false;
                 return getConnection();
@@ -141,7 +161,7 @@ public class DatabaseConnection {
     private static void switchToH2() throws SQLException {
         registerDrivers();
         dbType = "h2";
-        jdbcUrl = "jdbc:h2:mem:azani_isp_db;DB_CLOSE_DELAY=-1;MODE=MySQL;DATABASE_TO_LOWER=TRUE;CASE_INSENSITIVE_IDENTIFIERS=TRUE";
+        jdbcUrl = getH2JdbcUrl();
         if (h2KeepAlive == null || h2KeepAlive.isClosed()) {
             h2KeepAlive = DriverManager.getConnection(jdbcUrl, "sa", "");
         }
@@ -153,8 +173,19 @@ public class DatabaseConnection {
         if ("supabase".equalsIgnoreCase(dbType) || "postgresql".equalsIgnoreCase(dbType)) {
             try (Connection conn = DriverManager.getConnection(jdbcUrl, user, password);
                  Statement stmt = conn.createStatement()) {
-                executeScript(stmt, "/db/supabase_schema.sql");
-                System.out.println("Supabase PostgreSQL schema initialized successfully.");
+                
+                // Safe table creation without dropping existing data
+                executeScript(stmt, "/db/supabase_init_schema.sql");
+
+                // Only seed if empty
+                try (java.sql.ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM institutions")) {
+                    if (rs.next() && rs.getInt(1) == 0) {
+                        executeScript(stmt, "/db/supabase_seed.sql");
+                        System.out.println("Supabase initialized with initial sample records.");
+                    } else {
+                        System.out.println("Supabase connected. Persistent data preserved.");
+                    }
+                }
                 return;
             } catch (Exception e) {
                 System.err.println("Supabase setup notice: " + e.getMessage());
@@ -175,7 +206,7 @@ public class DatabaseConnection {
                 boolean autoFallback = Boolean.parseBoolean(config.getProperty("db.auto_fallback", "true"));
                 if (autoFallback) {
                     System.out.println("Notice: MySQL server unavailable (" + e.getMessage() + ").");
-                    System.out.println("Switching to embedded database mode for uninterrupted operation...");
+                    System.out.println("Switching to persistent embedded database mode for uninterrupted operation...");
                     try {
                         switchToH2();
                     } catch (SQLException ignored) {}
@@ -200,7 +231,16 @@ public class DatabaseConnection {
              Statement stmt = conn.createStatement()) {
 
             executeScript(stmt, "/db/schema.sql");
-            System.out.println("Database schema initialized successfully (" + dbType.toUpperCase() + ").");
+            
+            // Only seed if empty
+            try (java.sql.ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM institutions")) {
+                if (rs.next() && rs.getInt(1) == 0) {
+                    executeScript(stmt, "/db/sample_data.sql");
+                    System.out.println("Database schema initialized with sample records (" + dbType.toUpperCase() + ").");
+                } else {
+                    System.out.println("Database schema verified (" + dbType.toUpperCase() + "). Existing data preserved.");
+                }
+            }
         } catch (Exception e) {
             System.err.println("Database schema setup notice: " + e.getMessage());
         }
@@ -284,7 +324,12 @@ public class DatabaseConnection {
         // Save to working directory db.properties
         try (FileOutputStream out = new FileOutputStream("db.properties")) {
             p.store(out, "Configured via Azani ISP Settings");
-        }
+        } catch (Exception ignored) {}
+
+        // Save to global user profile ~/.azani_isp/db.properties
+        try (FileOutputStream out = new FileOutputStream(getGlobalConfigFile())) {
+            p.store(out, "Configured via Azani ISP Settings");
+        } catch (Exception ignored) {}
 
         config = p;
         applyConfigProperties();
