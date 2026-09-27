@@ -1,0 +1,17 @@
+# Build and output directories
+target/
+*.class
+
+# IDE and Editor configurations
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
+
+# Logs
+*.log
+
+# Sensitive environment credentials
+# (Keep db.properties ignored if you enter real Supabase passwords, keep db.properties.example committed)
