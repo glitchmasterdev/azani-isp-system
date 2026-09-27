@@ -176,7 +176,37 @@ public class MainWindow extends JFrame {
         // Table on Center
         institutionsModel = new DefaultTableModel(new String[]{"ID", "Name", "Category", "Contact Person", "Phone", "Email", "Status"}, 0);
         institutionsTable = new JTable(institutionsModel);
-        panel.add(new JScrollPane(institutionsTable), BorderLayout.CENTER);
+
+        // Revoke Membership button below the table
+        JButton btnRevoke = new JButton("Revoke Membership (Delete Selected)");
+        btnRevoke.setForeground(Color.BLACK);
+        btnRevoke.setFont(new Font("Segoe UI", Font.BOLD, 12));
+        btnRevoke.addActionListener(e -> {
+            int row = institutionsTable.getSelectedRow();
+            if (row < 0) {
+                JOptionPane.showMessageDialog(this, "Please select an institution row from the table first.", "No Selection", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            int instId = (Integer) institutionsModel.getValueAt(row, 0);
+            String instName = (String) institutionsModel.getValueAt(row, 1);
+            int confirm = JOptionPane.showConfirmDialog(this,
+                    "Are you sure you want to permanently revoke membership for:\n\"" + instName + "\" (ID: " + instId + ")?\n\nThis will delete ALL associated data (contact, infrastructure, subscription, bills, payments).",
+                    "Confirm Revoke Membership", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+            if (confirm == JOptionPane.YES_OPTION) {
+                try {
+                    institutionService.revokeInstitution(instId);
+                    JOptionPane.showMessageDialog(this, "Membership revoked successfully.\n\"" + instName + "\" has been removed from the system.", "Revoked", JOptionPane.INFORMATION_MESSAGE);
+                    refreshAllData();
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, "Error revoking membership: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+        JPanel centerPanel = new JPanel(new BorderLayout(4, 4));
+        centerPanel.add(new JScrollPane(institutionsTable), BorderLayout.CENTER);
+        centerPanel.add(btnRevoke, BorderLayout.SOUTH);
+        panel.add(centerPanel, BorderLayout.CENTER);
 
         return panel;
     }

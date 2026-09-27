@@ -101,6 +101,17 @@ public class InstitutionDAO {
         }
     }
 
+    public void deleteById(int institutionId) throws SQLException {
+        // CASCADE in schema handles contact_persons, infrastructure, subscriptions, bills, payments
+        String sql = "DELETE FROM institutions WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, institutionId);
+            int rows = ps.executeUpdate();
+            if (rows == 0) throw new SQLException("No institution found with ID " + institutionId);
+        }
+    }
+
     private Institution mapResultSetToInstitution(ResultSet rs) throws SQLException {
         int id = rs.getInt("id");
         String name = rs.getString("name");

@@ -74,4 +74,12 @@ public class InstitutionService {
     public void updateStatus(int institutionId, String status) throws SQLException {
         institutionDAO.updateStatus(institutionId, status);
     }
+
+    /**
+     * Permanently removes an institution and all associated data (CASCADE).
+     * Used when a member revokes their membership.
+     */
+    public void revokeInstitution(int institutionId) throws SQLException {
+        institutionDAO.deleteById(institutionId);
+    }
 }
