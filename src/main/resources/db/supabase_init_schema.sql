@@ -2,6 +2,7 @@
 -- AZANI INTERNET SERVICE PROVIDER INFORMATION SYSTEM
 -- Safe Supabase (PostgreSQL) DDL Schema (CREATE TABLE IF NOT EXISTS)
 -- Will NOT drop or delete existing user data on application restart!
+-- Row Level Security (RLS) is DISABLED on all tables for direct JDBC access.
 -- ==============================================================================
 
 -- 1. Learning Institutions Table
@@ -94,3 +95,15 @@ CREATE TABLE IF NOT EXISTS payments (
 CREATE INDEX IF NOT EXISTS idx_institutions_category ON institutions(category);
 CREATE INDEX IF NOT EXISTS idx_bills_status ON bills(status);
 CREATE INDEX IF NOT EXISTS idx_payments_institution ON payments(institution_id);
+
+-- ==============================================================================
+-- DISABLE ROW LEVEL SECURITY (RLS) on all tables
+-- Supabase enables RLS by default which blocks direct JDBC/postgres connections.
+-- Disabling it here ensures the app can read & write without policy restrictions.
+-- ==============================================================================
+ALTER TABLE institutions              DISABLE ROW LEVEL SECURITY;
+ALTER TABLE contact_persons          DISABLE ROW LEVEL SECURITY;
+ALTER TABLE infrastructure_requirements DISABLE ROW LEVEL SECURITY;
+ALTER TABLE subscriptions            DISABLE ROW LEVEL SECURITY;
+ALTER TABLE bills                    DISABLE ROW LEVEL SECURITY;
+ALTER TABLE payments                 DISABLE ROW LEVEL SECURITY;
