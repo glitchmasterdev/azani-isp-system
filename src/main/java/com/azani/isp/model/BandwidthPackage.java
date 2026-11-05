@@ -1,7 +1,7 @@
 package com.azani.isp.model;
 
 /**
- * Bandwidth packages offered by Azani ISP according to Table 1.
+ * Bandwidth packages offered by Azani ISP.
  */
 public enum BandwidthPackage {
     MBPS_4(4, 1200.0, "4 MBPS"),

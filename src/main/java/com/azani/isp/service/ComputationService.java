@@ -10,12 +10,12 @@ import java.sql.SQLException;
 import java.util.*;
 
 /**
- * Implements the core mathematical, business, and financial computations required by SCO200:
- * 4(a) Total installation cost for each institution
- * 4(b) Cost of personal computers and LAN services for institutions with assorted services
- * 4(c) Total monthly charges for upgraded internet services
- * 4(d) Total monthly charges, overdue fines, and reconnection fees per category of institution
- * 4(e) Aggregate amount for each service sorted by an institution
+ * Implements core mathematical, business, and financial computations:
+ * - Total installation cost for each institution
+ * - Cost of personal computers and LAN services for institutions with assorted services
+ * - Total monthly charges for upgraded internet services
+ * - Total monthly charges, overdue fines, and reconnection fees per category of institution
+ * - Aggregate amount for each service sorted by an institution
  */
 public class ComputationService {
     private final InstitutionDAO institutionDAO;
@@ -38,7 +38,7 @@ public class ComputationService {
     }
 
     /**
-     * Requirement 4(a): Total installation cost for each institution.
+     * Calculates total installation cost for each institution.
      * Computes base installation fee (10,000) + PC cost + LAN node tier cost.
      */
     public Map<Institution, Double> computeTotalInstallationCosts() throws SQLException {
@@ -53,7 +53,7 @@ public class ComputationService {
     }
 
     /**
-     * Requirement 4(b): Cost of personal computers and LAN services for institutions with assorted services.
+     * Calculates cost of personal computers and LAN services for institutions with assorted services.
      * Filters for institutions that purchased computers and/or LAN nodes from Azani.
      */
     public Map<Institution, Infrastructure> computeAssortedHardwareCosts() throws SQLException {
@@ -69,7 +69,7 @@ public class ComputationService {
     }
 
     /**
-     * Requirement 4(c): Total monthly charges for upgraded internet services.
+     * Calculates total monthly charges for upgraded internet services.
      * Computes the sum of monthly charges for institutions with upgraded bandwidth (with 10% discount).
      */
     public double computeUpgradedServiceCharges() throws SQLException {
@@ -84,7 +84,7 @@ public class ComputationService {
     }
 
     /**
-     * Requirement 4(c) helper: Returns list of all upgraded subscriptions.
+     * Helper method to return details of all upgraded subscriptions.
      */
     public List<Map<String, Object>> getUpgradedSubscriptionsDetails() throws SQLException {
         List<Map<String, Object>> list = new ArrayList<>();
@@ -105,7 +105,7 @@ public class ComputationService {
     }
 
     /**
-     * Requirement 4(d): Total monthly charges for internet services, overdue fines,
+     * Calculates total monthly charges for internet services, overdue fines,
      * and re-connection fees generated from each category of institution.
      */
     public Map<InstitutionCategory, CategoryFinancialSummary> computeCategoryRevenueBreakdown() throws SQLException {
@@ -128,7 +128,7 @@ public class ComputationService {
     }
 
     /**
-     * Requirement 4(e): Aggregate amount for each service sorted by an institution.
+     * Calculates aggregate amounts for each service sorted by institution.
      * Aggregates Registration, Installation Base, PC hardware, LAN nodes, Monthly charges,
      * Overdue fines, and Reconnection fees per institution, sorted alphabetically by institution name.
      */

@@ -48,7 +48,7 @@ public class Infrastructure {
     }
 
     /**
-     * Calculates the cost of LAN nodes according to Table 2:
+     * Calculates the tiered cost of LAN nodes:
      * 2 - 10:  KSh 10,000
      * 11 - 20: KSh 20,000
      * 21 - 40: KSh 30,000

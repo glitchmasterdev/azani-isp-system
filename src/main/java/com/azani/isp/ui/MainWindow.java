@@ -41,7 +41,7 @@ public class MainWindow extends JFrame {
     private JTextArea reportsTextArea;
 
     public MainWindow() {
-        super("Azani Internet Service Provider Information System - SCO200");
+        super("Azani Internet Service Provider Information System");
         this.institutionService = new InstitutionService();
         this.infrastructureService = new InfrastructureService();
         this.billingService = new BillingService();
@@ -242,7 +242,7 @@ public class MainWindow extends JFrame {
         gbc.gridx = 0; gbc.gridy++; form.add(new JLabel("Number of Users:"), gbc); gbc.gridx = 1; form.add(txtUsers, gbc);
         gbc.gridx = 0; gbc.gridy++; gbc.gridwidth = 2; form.add(chkReady, gbc); gbc.gridwidth = 1;
         gbc.gridx = 0; gbc.gridy++; form.add(new JLabel("Personal Computers (KSh 40,000):"), gbc); gbc.gridx = 1; form.add(txtPcs, gbc);
-        gbc.gridx = 0; gbc.gridy++; form.add(new JLabel("LAN Nodes (Table 2):"), gbc); gbc.gridx = 1; form.add(txtLanNodes, gbc);
+        gbc.gridx = 0; gbc.gridy++; form.add(new JLabel("LAN Nodes (Tiered Pricing):"), gbc); gbc.gridx = 1; form.add(txtLanNodes, gbc);
         gbc.gridx = 0; gbc.gridy++; gbc.gridwidth = 2; form.add(lblCostPreview, gbc);
 
         JButton btnSaveInfra = new JButton("Save Assessment & Calculate Costs");

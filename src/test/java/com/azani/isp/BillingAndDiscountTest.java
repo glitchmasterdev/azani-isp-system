@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class BillingAndDiscountTest {
 
     @Test
-    @DisplayName("Test Bandwidth standard prices from Table 1")
+    @DisplayName("Test Bandwidth standard prices")
     public void testTable1Prices() {
         assertEquals(1200.0, BandwidthPackage.MBPS_4.getMonthlyCost());
         assertEquals(2000.0, BandwidthPackage.MBPS_10.getMonthlyCost());

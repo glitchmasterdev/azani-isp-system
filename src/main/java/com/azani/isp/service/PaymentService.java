@@ -35,7 +35,7 @@ public class PaymentService {
     }
 
     /**
-     * Captures registration fee payment of KSh 8,500 (Task 2a).
+     * Captures registration fee payment of KSh 8,500.
      */
     public Payment captureRegistrationFee(int institutionId, String refNo, String notes) throws SQLException {
         if (refNo == null || refNo.trim().isEmpty()) {
@@ -54,7 +54,7 @@ public class PaymentService {
     }
 
     /**
-     * Captures installation fee payment (Task 2b).
+     * Captures installation fee payment.
      */
     public Payment captureInstallationFee(int institutionId, double amount, String refNo, String notes) throws SQLException {
         if (refNo == null || refNo.trim().isEmpty()) {
@@ -73,7 +73,7 @@ public class PaymentService {
     }
 
     /**
-     * Captures monthly internet bill payment (Task 2c), reconciling outstanding balance.
+     * Captures monthly internet bill payment, reconciling outstanding balance.
      */
     public Payment captureMonthlyPayment(int billId, double amount, String refNo, String notes) throws SQLException {
         List<Bill> bills = billingDAO.findAllBills();

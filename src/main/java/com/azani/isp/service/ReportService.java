@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Service for generating comprehensive formatted reports as specified in:
- * Task 3: Lists (Registered institutions, Defaulters, Disconnections, Infrastructure requirements)
- * Task 4: Computations (Installation, Assorted hardware, Upgraded services, Category revenue, Aggregates)
- * Task 5: Executive Reports and Invoices
+ * Service for generating comprehensive formatted reports:
+ * - Lists (Registered institutions, Defaulters, Disconnections, Infrastructure requirements)
+ * - Computations (Installation, Assorted hardware, Upgraded services, Category revenue, Aggregates)
+ * - Executive Reports and Invoices
  */
 public class ReportService {
     private final InstitutionService institutionService;
@@ -34,7 +34,7 @@ public class ReportService {
     }
 
     /**
-     * Task 3(a): Generate Report of Registered Institutions with Contact Person Details.
+     * Generates Report of Registered Institutions with Contact Person Details.
      */
     public String generateRegisteredInstitutionsReport() throws SQLException {
         List<Institution> list = institutionService.getAllInstitutions();
@@ -66,7 +66,7 @@ public class ReportService {
     }
 
     /**
-     * Task 3(b): Generate Report of Defaulters (institutions failing to pay by end of current month, 15% fine).
+     * Generates Report of Defaulters (institutions failing to pay by end of current month, 15% fine).
      */
     public String generateDefaultersReport() throws SQLException {
         List<Bill> defaulters = billingService.getDefaulterBills();
@@ -106,8 +106,8 @@ public class ReportService {
     }
 
     /**
-     * Task 3(c): Generate Report of Institutions with Disconnection Issues.
-     * (Unpaid after the 10th day of the subsequent month).
+     * Generates Report of Institutions with Disconnection Issues
+     * (unpaid after the 10th day of the subsequent month).
      */
     public String generateDisconnectionReport() throws SQLException {
         List<Bill> disconnected = billingService.getDisconnectedBills();
@@ -140,7 +140,7 @@ public class ReportService {
     }
 
     /**
-     * Task 3(d): Details of Infrastructural Requirements for each Institution.
+     * Generates details of Infrastructural Requirements for each Institution.
      */
     public String generateInfrastructureReport() throws SQLException {
         List<Institution> list = institutionService.getAllInstitutions();
@@ -178,19 +178,19 @@ public class ReportService {
                     formatMoney(totalInstall)));
         }
         sb.append("------------------------------------------------------------------------------------------------------------------------\n");
-        sb.append("Notes: Personal Computers = KSh 40,000 each | LAN node pricing per Table 2 | Base Installation = KSh 10,000\n\n");
+        sb.append("Notes: Personal Computers = KSh 40,000 each | Tiered LAN node pricing | Base Installation = KSh 10,000\n\n");
         return sb.toString();
     }
 
     /**
-     * Task 4(a)-(e) & 5: Master Comprehensive Financial & Computation Report.
+     * Generates Master Comprehensive Financial & Computation Report.
      */
     public String generateMasterComputationReport() throws SQLException {
         StringBuilder sb = new StringBuilder();
 
-        // 4(a) Total installation cost
+        // Installation costs
         sb.append("========================================================================================================================\n");
-        sb.append("                    COMPUTATION 4(a): TOTAL INSTALLATION COST FOR EACH INSTITUTION\n");
+        sb.append("                         TOTAL INSTALLATION COST FOR EACH INSTITUTION\n");
         sb.append("========================================================================================================================\n");
         Map<Institution, Double> installCosts = computationService.computeTotalInstallationCosts();
         double grandInstall = 0.0;
@@ -201,9 +201,9 @@ public class ReportService {
         }
         sb.append("   Grand Total Installation Costs: KSh ").append(formatMoney(grandInstall)).append("\n\n");
 
-        // 4(b) Assorted hardware costs
+        // Assorted hardware costs
         sb.append("========================================================================================================================\n");
-        sb.append("          COMPUTATION 4(b): COST OF PERSONAL COMPUTERS AND LAN SERVICES (ASSORTED SERVICES)\n");
+        sb.append("                 COST OF PERSONAL COMPUTERS AND LAN SERVICES (ASSORTED SERVICES)\n");
         sb.append("========================================================================================================================\n");
         Map<Institution, Infrastructure> assorted = computationService.computeAssortedHardwareCosts();
         double grandAssorted = 0.0;
@@ -219,9 +219,9 @@ public class ReportService {
         }
         sb.append("   Total Assorted Hardware & LAN Revenue: KSh ").append(formatMoney(grandAssorted)).append("\n\n");
 
-        // 4(c) Upgraded internet services
+        // Upgraded internet services
         sb.append("========================================================================================================================\n");
-        sb.append("              COMPUTATION 4(c): TOTAL MONTHLY CHARGES FOR UPGRADED INTERNET SERVICES\n");
+        sb.append("                     TOTAL MONTHLY CHARGES FOR UPGRADED INTERNET SERVICES\n");
         sb.append("                           (Includes 10% Discount on Upgraded Bandwidth)\n");
         sb.append("========================================================================================================================\n");
         List<Map<String, Object>> upgraded = computationService.getUpgradedSubscriptionsDetails();
@@ -238,9 +238,9 @@ public class ReportService {
         }
         sb.append("   Total Monthly Revenue from Upgraded Services: KSh ").append(formatMoney(totalUpgradedCharges)).append("\n\n");
 
-        // 4(d) Category Breakdown
+        // Category Breakdown
         sb.append("========================================================================================================================\n");
-        sb.append(" COMPUTATION 4(d): CHARGES, OVERDUE FINES (15%) & RECONNECTION FEES (KSh 1,000) PER CATEGORY\n");
+        sb.append("         CHARGES, OVERDUE FINES (15%) & RECONNECTION FEES (KSh 1,000) PER CATEGORY\n");
         sb.append("========================================================================================================================\n");
         sb.append(String.format("%-18s | %-8s | %-16s | %-16s | %-16s | %-16s\n",
                 "Category", "Count", "Monthly Charges", "Overdue Fines", "Reconnect Fees", "Category Total"));
@@ -264,9 +264,9 @@ public class ReportService {
         sb.append(String.format("%-18s | %-8s | KSh %-12s | KSh %-12s | KSh %-12s | KSh %-12s\n\n",
                 "TOTALS", "-", formatMoney(allMonthly), formatMoney(allFines), formatMoney(allReconnect), formatMoney(allGrand)));
 
-        // 4(e) Aggregates by institution
+        // Aggregates by institution
         sb.append("========================================================================================================================\n");
-        sb.append("           COMPUTATION 4(e): AGGREGATE AMOUNT FOR EACH SERVICE SORTED BY INSTITUTION\n");
+        sb.append("                  AGGREGATE AMOUNT FOR EACH SERVICE SORTED BY INSTITUTION\n");
         sb.append("========================================================================================================================\n");
         sb.append(String.format("%-25s | %-10s | %-10s | %-10s | %-10s | %-10s | %-10s | %-10s | %-12s\n",
                 "Institution", "Category", "Reg Fee", "Install", "PCs Cost", "LAN Cost", "Monthly", "Fines+Rec", "Grand Total"));

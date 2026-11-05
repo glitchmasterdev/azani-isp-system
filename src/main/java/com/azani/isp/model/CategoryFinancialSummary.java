@@ -1,7 +1,7 @@
 package com.azani.isp.model;
 
 /**
- * Encapsulates financial breakdown by institution category (SCO200 Req 4(d)).
+ * Encapsulates financial breakdown by institution category.
  */
 public class CategoryFinancialSummary {
     private final InstitutionCategory category;

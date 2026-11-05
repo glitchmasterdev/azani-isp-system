@@ -2,7 +2,7 @@ package com.azani.isp.model;
 
 /**
  * Model representing the aggregated financial amounts for each service category,
- * grouped per institution (SCO200 Req 4(e)).
+ * grouped per institution.
  */
 public class ServiceAggregateSummary {
     private int institutionId;

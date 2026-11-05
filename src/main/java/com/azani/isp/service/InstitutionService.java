@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 /**
- * Service handling Institution registration and profile retrieval (Task 1).
+ * Service handling Institution registration and profile retrieval.
  */
 public class InstitutionService {
     private final InstitutionDAO institutionDAO;
@@ -30,7 +30,7 @@ public class InstitutionService {
     }
 
     /**
-     * Registers a new institution along with the personal details of the contact person (Task 1).
+     * Registers a new institution along with the personal details of the contact person.
      */
     public Institution registerInstitution(String name, InstitutionCategory category, String address,
                                            LocalDate regDate, String contactName, String designation,

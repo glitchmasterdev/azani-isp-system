@@ -9,9 +9,9 @@ import static org.junit.jupiter.api.Assertions.*;
 public class InfrastructureCalculationTest {
 
     @Test
-    @DisplayName("Test LAN nodes pricing tiers based on Table 2")
+    @DisplayName("Test LAN nodes pricing tiers")
     public void testLanPricingTiers() {
-        // Table 2:
+        // LAN node pricing tiers:
         // 2 - 10: 10,000
         // 11 - 20: 20,000
         // 21 - 40: 30,000

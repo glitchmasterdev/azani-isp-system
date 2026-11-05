@@ -32,7 +32,7 @@ public class CLIApp {
 
     public void start() {
         System.out.println("====================================================================");
-        System.out.println("   AZANI INTERNET SERVICE PROVIDER INFORMATION SYSTEM (SCO200)");
+        System.out.println("         AZANI INTERNET SERVICE PROVIDER INFORMATION SYSTEM         ");
         System.out.println("   Connected Database: " + DatabaseConnection.getActiveDbType().toUpperCase());
         System.out.println("====================================================================");
 
@@ -90,15 +90,15 @@ public class CLIApp {
 
     private void printMenu() {
         System.out.println("\n----------------- MAIN OPERATIONS MENU -----------------");
-        System.out.println(" 1. Register Institution & Contact Person (Req 1)");
-        System.out.println(" 2. Capture Payments [Registration, Installation, Monthly, Reconnection] (Req 2)");
-        System.out.println(" 3. View Registered Institutions (Req 3a)");
-        System.out.println(" 4. View List of Defaulters [15% fine] (Req 3b)");
-        System.out.println(" 5. View Disconnection Issues Report (Req 3c)");
-        System.out.println(" 6. View Infrastructural Requirements Report (Req 3d)");
+        System.out.println(" 1. Register Institution & Contact Person");
+        System.out.println(" 2. Capture Payments [Registration, Installation, Monthly, Reconnection]");
+        System.out.println(" 3. View Registered Institutions");
+        System.out.println(" 4. View List of Defaulters [15% fine]");
+        System.out.println(" 5. View Disconnection Issues Report");
+        System.out.println(" 6. View Infrastructural Requirements Report");
         System.out.println(" 7. Assess / Record Infrastructure & Hardware (PCs & LAN)");
         System.out.println(" 8. Manage Bandwidth Subscriptions & 10% Upgrades");
-        System.out.println(" 9. Perform All Computations & Generate Master Report (Req 4a-e, 5)");
+        System.out.println(" 9. Perform All Computations & Generate Master Report");
         System.out.println("10. Seed Demonstration Data");
         System.out.println(" 0. Exit System");
         System.out.println("---------------------------------------------------------");
@@ -229,7 +229,7 @@ public class CLIApp {
         System.out.print("Institution ID: ");
         int instId = Integer.parseInt(scanner.nextLine().trim());
 
-        System.out.println("Available Packages (Table 1):");
+        System.out.println("Available Bandwidth Packages:");
         System.out.println("1. 4 MBPS  - KSh 1,200/mo");
         System.out.println("2. 10 MBPS - KSh 2,000/mo");
         System.out.println("3. 20 MBPS - KSh 3,500/mo");
